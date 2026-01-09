@@ -1,0 +1,23 @@
+# Ignore all runtime config directories inside docker/
+docker/*
+# But do track the docker-compose.yml file
+!docker-compose.yml
+
+# Ignore all contents inside each app's config folder
+docker/sonarr/
+docker/radarr/
+docker/transmission/
+docker/overseerr/
+
+# Ignore logs, databases, and cache files created by the apps
+*.log
+*.db
+*.sqlite
+*.cache
+
+# Ignore media files (you generally don't want to commit these!)
+~/Videos/
+
+# Optional: Ignore any environment files with secrets
+.env
+

@@ -1,0 +1,94 @@
+version: "3.8"
+
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - TRANSMISSION_DOWNLOAD_DIR=/downloads/complete
+      - TRANSMISSION_INCOMPLETE_DIR=/downloads/incomplete
+      - TRANSMISSION_INCOMPLETE_DIR_ENABLED=true
+    volumes:
+      - ./docker/transmission:/config
+      - ~/Videos/Downloads:/downloads
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./docker/jackett:/config
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./docker/sonarr:/config
+      - ~/Videos:/media
+    ports:
+      - 8989:8989
+    depends_on:
+      - transmission
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./docker/radarr:/config
+      - ~/Videos:/media
+    ports:
+      - 7878:7878
+    depends_on:
+      - transmission
+    restart: unless-stopped
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ~/Videos:/media
+      - ./docker/jellyfin:/config
+    ports:
+      - 8096:8096
+    restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./docker/jellyseerr:/app/config
+    ports:
+      - 5056:5055
+    restart: unless-stopped
+
