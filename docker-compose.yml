@@ -92,3 +92,13 @@ services:
       - 5056:5055
     restart: unless-stopped
 
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+    restart: unless-stopped
+
+
