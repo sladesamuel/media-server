@@ -16,13 +16,13 @@ The first time you pull down this project, you'll need to initialize it. To do t
 To run the service, run the following command from the terminal:
 
 ```sh
-$ docker-compose up -d
+$ ./start.sh
 ```
 
 This will spin up all services in Docker in the background. To stop, run:
 
 ```sh
-$ docker-compose down
+$ ./stop.sh
 ```
 
 Once running, you can access the web UI for each service using the following URLs:
