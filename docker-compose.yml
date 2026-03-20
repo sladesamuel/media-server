@@ -108,6 +108,17 @@ services:
       - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
     restart: unless-stopped
 
+  homarr:
+    image: ghcr.io/homarr-labs/homarr:latest
+    container_name: homarr
+    ports:
+      - 7575:7575
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker/homarr/appdata:/appdata
+    environment:
+      - SECRET_ENCRYPTION_KEY=${HOMARR_ENCRYPTION_KEY}
+    restart: unless-stopped
 
   netdata:
     image: netdata/netdata:latest
